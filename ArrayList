@@ -1,0 +1,126 @@
+package HW;
+import java.util.Arrays;
+//Phuc Dang
+/**
+  Purpose: The purpose of this program is to create the ArrayList library.
+  Solution: The solution to this program is to create ten methods for
+  a standard List data structure using Arrays. Every operations for the ArrayList
+  will be made through the Arrays library.
+  Data Structures Used: Arrays
+  Program Use: Driver programs will be able to call ArrayList()
+  to create an ArrayList and then use several methods to modify
+  the values inside the ArrayList.
+*/
+
+public class ArrayList {
+
+  private Object [] storage;
+  private int size; 
+
+  //Default constructor that will create an ArrayList
+  //ArrayList object with a default size (capacity) of 10
+  public ArrayList() {
+    storage = new Object[10];
+    this.size = storage.length;
+  }
+
+  // Constructor for ArrayList that accepts a parameter of type int 
+  //and sets the size to this parameter
+  public ArrayList(int n) {
+    this.size = n;
+    storage = new Object[n];
+  }
+
+  // Places Object at the end of the ArrayList.
+  public void add(Object x) {
+    checkCapacity(size + 1);
+    storage[size++] = x;
+  }
+
+
+  // Place a value at a given location in the ArrayList.
+  public void add(int index, Object x) {
+    checkCapacity(size + 1);
+    storage[index] = x;
+  }
+
+  // Checks the current size of the Object array.
+  // Used to see whether the array needs to be doubled in size to add a new value.
+  private void checkCapacity(int capacity) {
+    int oldCapacity = storage.length; // get current array length.
+
+    // If the oldCapacity is less than the int capacity passed in, then double the array length.
+    if (capacity > oldCapacity) {
+      storage = Arrays.copyOf(storage, storage.length * 2);
+    }
+
+  }
+
+  // Retrieves object at given location 
+  public Object get(int index) {
+
+      if (index < size) { //check to see if object is in the array.
+          return storage[index];
+      } else {
+          throw new ArrayIndexOutOfBoundsException();
+      }
+
+  }
+
+  // Allows to retrieve the number of elements in the ArrayList.
+  public int size() {
+    return size;
+  }
+
+  // Tests to see if ArrayList is empty
+  // Invariant: Will always return false if size > 0.
+  public boolean isEmpty() {
+    return size == 0;
+  }
+
+  // see if a particular object exist in the ArrayList 
+  public boolean isIn(Object ob) {
+    return find(ob) >= 0; 
+  }
+
+  //return the location of first occurrence of an Object starting from location 0
+  public int find(Object n) {
+    if (n == null) { // check for nulls
+      for (int i = 0; i < size; i++) {
+        if (storage[i] == null) {
+          return i; // returns the index
+        }
+      }
+    } else {
+      for (int l = 0; l < size; l++) {
+        if (n.equals(storage[l])) {
+          return l; 
+        }
+      }
+    }
+    return -1; 
+    }
+//helper function to for the remove method.
+ private void forceRemover(Object [] ob, int index) {
+   Object [] ob2 = new Object [ob.length - 1]; 
+   System.arraycopy(ob, 0, ob2, 0, index);
+   System.arraycopy(ob, index + 1, ob2, index, ob.length - index - 1);
+ }
+  // Remove the first occurrence of an Object starting from location 0
+  public void remove(Object n) {
+
+    if (n == null) {
+      for (int a = 0; a < size; a++) {
+        if (storage[a] == null) {
+            forceRemover(storage, a); // remove the Object value at index a.
+        }
+      }
+    } else {
+      for (int b = 0; b < size; b++) {
+        if (n.equals(storage[b])) {
+           forceRemover(storage, b); // remove the Object value at index b.
+        }
+      }
+    }
+  }
+}
